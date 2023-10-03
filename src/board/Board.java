@@ -31,10 +31,7 @@ public class Board {
 	}
 
 	public Piece piece(Position position) {
-		if (!positionExists(position)) {
-			throw new BoardException("Posição não está dentro do tabuleiro");
-		}
-		return pieces[position.getRow()][position.getColumn()];
+		return piece(position.getRow(), position.getColumn());
 	}
 
 	public void placePiece(Piece piece, Position position) {
@@ -50,15 +47,16 @@ public class Board {
 			throw new BoardException("Posição não está dentro do tabuleiro");
 		}
 
-		if (piece(position) == null) {
+		Piece selectedPiece = piece(position);
+
+		if (selectedPiece == null) {
 			return null;
 		}
 
-		Piece aux = piece(position);
-		aux.position = null;
+		selectedPiece.position = null;
 		pieces[position.getRow()][position.getColumn()] = null;
-		
-		return aux;
+
+		return selectedPiece;
 	}
 
 	private boolean positionExists(int row, int column) {

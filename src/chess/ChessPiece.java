@@ -20,12 +20,12 @@ public class ChessPiece extends Piece {
 	public int getMoveCount() {
 		return moveCount;
 	}
-	
+
 	protected void increaseMoveCount() {
-		moveCount ++;
+		moveCount++;
 	}
-	
+
 	protected void decreaseMoveCount() {
-		moveCount --;
+		moveCount--;
 	}
 }
