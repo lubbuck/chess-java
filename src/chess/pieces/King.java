@@ -1,6 +1,7 @@
 package chess.pieces;
 
 import board.Board;
+import board.Position;
 import chess.ChessPiece;
 import chess.Color;
 
@@ -15,9 +16,65 @@ public class King extends ChessPiece {
 		return "K";
 	}
 
+	private boolean canMove(Position position) {
+		ChessPiece piece = (ChessPiece) getBoard().piece(position);
+
+		return piece == null || piece.getColor() != getColor();
+	}
+
 	@Override
 	public boolean[][] possibleMoves() {
 		boolean[][] possibleMoves = new boolean[getBoard().getRows()][getBoard().getColumns()];
+
+		Position p = new Position(0, 0);
+
+		// up
+		p.setValues(position.getRow() - 1, position.getColumn());
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+
+		// down
+		p.setValues(position.getRow() + 1, position.getColumn());
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+
+		// left
+		p.setValues(position.getRow(), position.getColumn() - 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+
+		// right
+		p.setValues(position.getRow(), position.getColumn() + 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+
+		// nw
+		p.setValues(position.getRow() - 1, position.getColumn() - 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+
+		// ne
+		p.setValues(position.getRow() - 1, position.getColumn() + 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+		
+		// sw
+		p.setValues(position.getRow() + 1, position.getColumn() - 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
+		
+		// se
+		p.setValues(position.getRow() + 1, position.getColumn() + 1);
+		if (getBoard().positionExists(p) && canMove(p)) {
+			possibleMoves[p.getRow()][p.getColumn()] = true;
+		}
 		return possibleMoves;
 	}
 }
