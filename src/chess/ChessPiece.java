@@ -21,6 +21,10 @@ public abstract class ChessPiece extends Piece {
 	public int getMoveCount() {
 		return moveCount;
 	}
+	
+	public ChessPosition getChessPosition() {
+		return ChessPosition.fromPosition(position);
+	}
 
 	protected boolean isThereOpponentPiece(Position position) {
 		ChessPiece piece = (ChessPiece) getBoard().piece(position);
