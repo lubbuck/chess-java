@@ -1,7 +1,10 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -35,7 +38,7 @@ public class UI {
 		System.out.println("\033[H\033[2J");
 		System.out.flush();
 	}
-	
+
 	public static ChessPosition readChessPosition(Scanner sc) {
 		try {
 			String s = sc.nextLine();
@@ -44,14 +47,16 @@ public class UI {
 			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
 			throw new InputMismatchException("Erro ao ler a posição. Valores válidos de a1 à h8");
-		}	
+		}
 	}
-	
-	public static void printMatch(ChessMatch match) {
+
+	public static void printMatch(ChessMatch match, List<ChessPiece> captureds) {
 		printBoard(match.getPieces());
 		System.out.println();
+		printCapturedPieces(captureds);
+		System.out.println();
 		System.out.println("Turno: " + match.getTurn());
-		System.out.println("Vez das : " + match.getCurrentPlayer());		
+		System.out.println("Vez das : " + match.getCurrentPlayer());
 	}
 
 	public static void printBoard(ChessPiece[][] pieces) {
@@ -65,7 +70,7 @@ public class UI {
 		System.out.println("  a b c d e f g h");
 
 	}
-	
+
 	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");
@@ -79,7 +84,7 @@ public class UI {
 	}
 
 	private static void printPiece(ChessPiece piece, boolean background) {
-		if(background) {
+		if (background) {
 			System.out.print(ANSI_BLUE_BACKGROUND);
 		}
 		if (piece == null) {
@@ -92,6 +97,21 @@ public class UI {
 			}
 		}
 		System.out.print(" ");
+	}
+
+	private static void printCapturedPieces(List<ChessPiece> captureds) {
+		List<ChessPiece> whites = captureds.stream().filter(piece -> piece.getColor() == Color.WHITE)
+				.collect(Collectors.toList());
+		List<ChessPiece> blacks = captureds.stream().filter(piece -> piece.getColor() == Color.BLACK)
+				.collect(Collectors.toList());
+		System.out.println("Peças Capturadas");
+		System.out.print("Brancas ");
+		System.out.print(ANSI_WHITE);
+		System.out.println(Arrays.toString(whites.toArray()));
+		System.out.print("Pretas ");
+		System.out.print(ANSI_YELLOW);
+		System.out.println(Arrays.toString(blacks.toArray()));
+		System.out.print(ANSI_RESET);
 	}
 
 }
