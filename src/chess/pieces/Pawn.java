@@ -2,14 +2,21 @@ package chess.pieces;
 
 import board.Board;
 import board.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
 public class Pawn extends ChessPiece {
 
-	public Pawn(Board board, Color color) {
+	private ChessMatch chessMatch;
+
+	public Pawn(Board board, Color color, ChessMatch chessMatch) {
 		super(board, color);
-		// TODO Auto-generated constructor stub
+		this.chessMatch = chessMatch;
+	}
+
+	public ChessMatch getChessMatch() {
+		return chessMatch;
 	}
 
 	@Override
@@ -36,14 +43,30 @@ public class Pawn extends ChessPiece {
 			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {
 				possibleMoves[p.getRow()][p.getColumn()] = true;
 			}
-			
+
 			// diagonal direita
 			p.setValues(position.getRow() - 1, position.getColumn() + 1);
 			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {
 				possibleMoves[p.getRow()][p.getColumn()] = true;
 			}
-		}
-		else {			
+
+			// passant
+			if (position.getRow() == 3) {
+				// à esquerda
+				Position leftOfPawn = new Position(position.getRow(), position.getColumn() - 1);
+				if (getBoard().positionExists(leftOfPawn) && isThereOpponentPiece(leftOfPawn)
+						&& getBoard().piece(leftOfPawn) == chessMatch.getEnPassantVulnerable()) {
+					possibleMoves[leftOfPawn.getRow() - 1][leftOfPawn.getColumn()] = true;
+				}
+
+				// à direita
+				Position rightOfPawn = new Position(position.getRow(), position.getColumn() + 1);
+				if (getBoard().positionExists(rightOfPawn) && isThereOpponentPiece(rightOfPawn)
+						&& getBoard().piece(rightOfPawn) == chessMatch.getEnPassantVulnerable()) {
+					possibleMoves[rightOfPawn.getRow() - 1][rightOfPawn.getColumn()] = true;
+				}
+			}
+		} else {
 			// casa a frente
 			p.setValues(position.getRow() + 1, position.getColumn());
 			if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
@@ -60,13 +83,30 @@ public class Pawn extends ChessPiece {
 			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {
 				possibleMoves[p.getRow()][p.getColumn()] = true;
 			}
-			
+
 			// diagonal direita
 			p.setValues(position.getRow() + 1, position.getColumn() + 1);
 			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {
 				possibleMoves[p.getRow()][p.getColumn()] = true;
 			}
-			
+
+			// passant
+			if (position.getRow() == 4) {
+				// à esquerda
+				Position leftOfPawn = new Position(position.getRow(), position.getColumn() - 1);
+				if (getBoard().positionExists(leftOfPawn) && isThereOpponentPiece(leftOfPawn)
+						&& getBoard().piece(leftOfPawn) == chessMatch.getEnPassantVulnerable()) {
+					possibleMoves[leftOfPawn.getRow() + 1][leftOfPawn.getColumn()] = true;
+				}
+
+				// à direita
+				Position rightOfPawn = new Position(position.getRow(), position.getColumn() + 1);
+				if (getBoard().positionExists(rightOfPawn) && isThereOpponentPiece(rightOfPawn)
+						&& getBoard().piece(rightOfPawn) == chessMatch.getEnPassantVulnerable()) {
+					possibleMoves[rightOfPawn.getRow() + 1][rightOfPawn.getColumn()] = true;
+				}
+			}
+
 		}
 
 		return possibleMoves;
@@ -76,7 +116,5 @@ public class Pawn extends ChessPiece {
 	public String toString() {
 		return "P";
 	}
-	
-	
 
 }

@@ -1,7 +1,6 @@
 package chess.pieces;
 
 import board.Board;
-import board.Piece;
 import board.Position;
 import chess.ChessMatch;
 import chess.ChessPiece;
